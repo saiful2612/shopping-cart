@@ -25,11 +25,11 @@
 
                      <div class="col-md-5 center-item">
                         <div class="input-group number-spinner">
-                           <button class="btn btn-default"><i class="fas fa-minus"></i></button>
-                           <input type="text" class="form-control text-center" value="0">
-                           <button class="btn btn-default"><i class="fas fa-plus"></i></button>
+                           <button id="minusB" class="btn btn-default"><i class="fas fa-minus"></i></button>
+                           <input id="amountB" type="text" class="form-control text-center" value="1">
+                           <button id="plusB"  class="btn btn-default"><i class="fas fa-plus"></i></button>
                         </div>
-                        <h5>$1219</h5>
+                        <h5>$ <span id="boxPriceB" >1219</span></h5>
                         <img src="images/remove.png" alt="" class="remove-item">
                      </div>
                   </div>
@@ -44,7 +44,7 @@
                      <div class="col-md-5 center-item">
                         <div id="cover" class="input-group number-spinner">
                            <button id="minus" class="btn btn-default"><i class="fas fa-minus"></i></button>
-                           <input id="amount" type="text" class="form-control text-center" value='0'>
+                           <input id="amount" type="text" class="form-control text-center" value='1'>
                            <button id="plus" class="btn btn-default"><i class="fas fa-plus"></i></button>
 
                         </div>
@@ -64,14 +64,14 @@
                      </div>
 
                      <div class="col-md-4 status">
-                        <h5>$1,278</h5>
-                        <h5>$0</h5>
-                        <h5>$1,278</h5>
+                        <h5>$ <span id="subTotal">00</span> </h5>
+                        <h5>$ <span id="tax" >0</span></h5>
+                        <h5>$ <span id="total">00</span> </h5>
                      </div>
                   </div>
                </div>
                <div class="col-md-12 pt-4 pb-4">
-                  <button type="button" class="btn btn-success check-out">Check Out</button>
+                  <button id="check" type="button" class="btn btn-success check-out">Check Out</button>
                </div>
             </div>
          </div>
@@ -82,6 +82,57 @@
 
 
    <script>
+
+
+      // plus buttonB
+      const plusIndicatorB=document.getElementById('plusB');
+
+      // minus buttonB
+      const minusIndicatorB=document.getElementById('minusB');
+
+      // default minus button disable
+      minusIndicatorB.setAttribute('disabled','disabled') 
+
+      // value of inputB
+      const amountNumberB=document.getElementById('amountB');
+
+      var valueCountB 
+
+      // plus button functionality
+      plusIndicatorB.addEventListener('click', ()=>{
+         valueCountB= amountNumberB.value;
+         valueCountB++;
+         amountNumberB.value=valueCountB;
+
+
+         if(valueCountB>=1){
+            minusIndicatorB.removeAttribute('disabled');
+            minusIndicatorB.classList.remove('disabled');
+         }
+
+         priceTotalB()
+      })
+
+      minusIndicatorB.addEventListener('click',()=>{
+         valueCountB= amountNumberB.value;
+         valueCountB--;
+         amountNumberB.value= valueCountB;
+
+         if(valueCountB==1){
+            minusIndicatorB.setAttribute('disabled','disabled')
+         }
+
+         priceTotalB()
+      })
+
+      //  Taking price
+      const coverCostB=document.getElementById('boxPriceB').innerText;
+
+      function priceTotalB(){
+         const totalB = valueCountB*coverCostB;
+         document.getElementById('boxPriceB').innerText=totalB;
+         return totalB
+      }   
       // plus button
       const plusIndicator=document.getElementById('plus');
 
@@ -129,13 +180,38 @@
       function priceTotal(){
          const total = valueCount*coverCost;
          document.getElementById('boxPrice').innerText=total;
+         return total
       }    
 
+      const checkOut = document.getElementById('check')
+      checkOut.addEventListener('click',()=>{
+         const priceOne= document.getElementById('boxPriceB').innerText;
+         const valueOne =parseFloat(priceOne)
+   
+         const priceTwo= document.getElementById('boxPrice').innerText;
+         const valueTwo =parseFloat(priceTwo) 
+
+         const productPrice= valueOne + valueTwo 
+
+         const subTotalbox = document.getElementById('subTotal').innerText
+         const box=parseFloat(subTotalbox)
+         document.getElementById('subTotal').innerText=box+productPrice
+         
+         const taxBox = document.getElementById('tax').innerText
+         const Box=parseFloat(taxBox);
+         const totalTax = Box + productPrice * .015;
+         document.getElementById('tax').innerText=totalTax.toFixed(2);
+
+
+         const Totalbox = document.getElementById('total').innerText
+         const inTotal=parseFloat(Totalbox);
+         document.getElementById('total').innerText=totalTax+ productPrice + inTotal
+      })
 
 
 
       
-      
+  
    </script>
 </body>
 
